@@ -1,5 +1,5 @@
 import openai, time, json, transformers, re, datetime, sys, os
-from mailmerge import MailMerge #pip install docx-mailmerge
+from mailmerge import MailMerge 
 from tqdm import tqdm, trange
 from dotenv import load_dotenv
 
@@ -9,19 +9,20 @@ GPT_TEMP = 0.5
 GPT_FREQ = 0.0
 GPT_PRES = 0.0
 GBP_TOPP = 1.0
-GPT_CALL_OUT_ON = True   #To save costs, set to False when debugging or developing
+GPT_CALL_OUT_ON = True   
 PRINT_AS_YOU_GO = False
-
 load_dotenv()
-
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
+# more function definitions here ...
 def cprint(text):
-	#Conditional print
-	global PRINT_AS_YOU_GO
-	if PRINT_AS_YOU_GO: print(text)
-
+    global PRINT_AS_YOU_GO
+    if PRINT_AS_YOU_GO: print(text)
+    
+# other functions go here...
 def remove_digits_period(string): 
+
+
     modified_string = ''
     for i, char in enumerate(string):
         if i < 4 and (char.isdigit() or char == '.'):
@@ -61,11 +62,12 @@ def gpt_complete(prompt,token_size):
     
 
 if __name__ == '__main__':
-
 	title = input('Give your book a title: ')
 	author = input('Enter your name: ')
 	conception_date = str(datetime.datetime.now().date())
 	print_output = input('Do you want to see the results in real-time (\'yes\' or leave blank for no): ')
+
+
 	if print_output.upper() == 'YES': PRINT_AS_YOU_GO = True
 	output_file = 'books/' + title.replace(' ','_').replace('/','-').replace('"','').replace('\'','').replace('<','').replace('>','') + '.txt'
 	subject = input('What is your book about? This book is about...')
@@ -81,6 +83,9 @@ if __name__ == '__main__':
 	time.sleep(1)
 	json_obj = json.loads(json_result)
 	toc = ''
+	
+	
+	
 	with open(output_file, 'a') as f: 
 		for i, chapter in enumerate(json_obj,start=1):
 			toc_item = '  '+str(i)+': ' +remove_chapter(chapter['chapter']) + '\n'
